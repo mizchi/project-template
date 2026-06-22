@@ -7,6 +7,7 @@ result-*
 # apm.yml + apm.lock.yaml are tracked; re-deploy with `apm install`.
 apm_modules/
 .claude/skills/
+.github/skills/
 
 # Local env overrides
 .env.local

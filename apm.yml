@@ -10,6 +10,8 @@ dependencies:
     # Pick further per-project skills by running skill-selector against the
     # repo's signal. empirical-prompt-tuning lives in the Claude config side,
     # so it is intentionally not declared here.
-    - mizchi/skills/meta/skill-selector
+    # Pinned to a commit (matches apm.lock.yaml) so resolution is reproducible
+    # and `apm install` stops warning about drift.
+    - mizchi/skills/meta/skill-selector#89c1b34018ba0d85a770c065ba22f83a8d004d34
   mcp: []
 scripts: {}
