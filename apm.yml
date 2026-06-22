@@ -1,0 +1,15 @@
+name: project-template
+version: 0.1.0
+description: Language-agnostic project template (nix + direnv + apm).
+author: mizchi
+# Declared unconditionally so install never depends on marker-dir auto-detection.
+targets:
+  - claude
+dependencies:
+  apm:
+    # Pick further per-project skills by running skill-selector against the
+    # repo's signal. empirical-prompt-tuning lives in the Claude config side,
+    # so it is intentionally not declared here.
+    - mizchi/skills/meta/skill-selector
+  mcp: []
+scripts: {}

@@ -1,0 +1,12 @@
+# Nix
+result
+result-*
+.direnv/
+
+# APM installed modules / deployed skills.
+# apm.yml + apm.lock.yaml are tracked; re-deploy with `apm install`.
+apm_modules/
+.claude/skills/
+
+# Local env overrides
+.env.local

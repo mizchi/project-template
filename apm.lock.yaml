@@ -1,0 +1,13 @@
+lockfile_version: '1'
+generated_at: '2026-06-22T13:20:15.410024+00:00'
+apm_version: 0.8.11
+dependencies:
+- repo_url: mizchi/skills
+  host: github.com
+  resolved_commit: 89c1b34018ba0d85a770c065ba22f83a8d004d34
+  virtual_path: meta/skill-selector
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .claude/skills/skill-selector
+  content_hash: sha256:1d7eb89ebe008a668c9ad495bc8cf4e2de9e1387b6edc5033e4d4d43aba382b5

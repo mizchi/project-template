@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "direnv allow \"$CLAUDE_PROJECT_DIR\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}

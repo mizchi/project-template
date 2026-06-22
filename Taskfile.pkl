@@ -1,0 +1,57 @@
+/// pkfire task graph for the language-agnostic project template.
+///
+/// One-time setup (after `nix develop` / `direnv allow`):
+///
+///   pkf hooks install
+///
+/// That writes `.git/hooks/pre-push` to call `pkf run pre-push`.
+/// `.envrc` performs the same call, so `cd` into a fresh clone is enough.
+/// Re-running is idempotent.
+amends "package://pkg.pkl-lang.org/github.com/mizchi/pkfire/pkfire@0.9.0#/Taskfile.pkl"
+
+/// Install / refresh APM-declared skills (skill-selector, …).
+local setup: Task = new {
+  name = "setup"
+  description = "Install APM dependencies declared in apm.yml"
+  cmd = "apm install"
+  cache = false
+}
+
+/// Secret-leak gate. Scans the file set about to be pushed via the
+/// asymmetric `<upstream>..HEAD` diff (`@{push}` first, falling back to
+/// `@{u}`). On a brand-new branch with no upstream, scans full history.
+/// gitleaks is a single static binary (no node), keeping the template
+/// language-agnostic.
+local gitleaks: Task = new {
+  name = "lint:gitleaks"
+  description = "Run gitleaks against the commits about to be pushed"
+  cmd =
+    #"""
+    set -euo pipefail
+    upstream=$(git rev-parse --symbolic-full-name '@{push}' 2>/dev/null \
+            || git rev-parse --symbolic-full-name '@{u}' 2>/dev/null \
+            || true)
+    if [ -n "$upstream" ]; then
+      gitleaks git --no-banner --log-opts="${upstream}..HEAD" .
+    else
+      gitleaks git --no-banner .
+    fi
+    """#
+  cache = false
+}
+
+/// Pre-push hook target. `pkf hooks install` wires `.git/hooks/pre-push`
+/// to this. Kept as a thin aggregator so more gates can be added without
+/// touching hook installation. Bypass in emergencies: `git push --no-verify`.
+local prePush: Task = new {
+  name = "pre-push"
+  description = "Pre-push gate: secret leak check"
+  cmd = "echo pre-push ok"
+  cache = false
+  // git passes `<remote> <url>` plus a stdin ref stream; declare that the
+  // task accepts positional args so the hook invocation isn't rejected.
+  acceptsArgs = true
+  deps { gitleaks }
+}
+
+tasks { setup; gitleaks; prePush }
