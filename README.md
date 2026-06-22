@@ -32,6 +32,7 @@ otherwise enough.
 | `Taskfile.pkl` | pkfire tasks; `pre-push` runs a gitleaks secret scan |
 | `apm.yml` | Declares `mizchi/skills/meta/skill-selector` |
 | `init.sh` | One-shot bootstrap (Nix → `apm install` → `direnv allow`) |
+| `CLAUDE.md` | Agent/human guide: bootstrap, devShell, tasks, toolchain gotchas (`AGENTS.md` is a symlink to it) |
 | `.claude/settings.json` | `SessionStart` hook runs `direnv allow` for the agent session |
 | `.github/workflows/test.yml` | CI: builds the devShell, runs `pkf run ci` (toolchain guard + gitleaks) and verifies APM resolution |
 
