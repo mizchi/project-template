@@ -17,6 +17,33 @@ local setup: Task = new {
   cache = false
 }
 
+/// Assert the devShell exposes the expected toolchain. Cheap reproducibility
+/// guard: if the flake drifts and a tool drops out, CI fails here.
+local verifyTools: Task = new {
+  name = "verify-tools"
+  description = "Assert the devShell exposes pkf / apm / gitleaks / ast-grep"
+  cmd =
+    #"""
+    set -euo pipefail
+    for t in pkf apm gitleaks ast-grep; do
+      command -v "$t" >/dev/null || { echo "missing tool: $t" >&2; exit 1; }
+    done
+    echo "tools ok"
+    """#
+  cache = false
+}
+
+/// CI gate. Full-history secret scan (CI checks out fetch-depth: 0) plus the
+/// toolchain guard. Language-agnostic by design — per-project build / test
+/// tasks should be added here as `deps` once a language is chosen.
+local ci: Task = new {
+  name = "ci"
+  description = "CI gate: toolchain guard + full-history secret scan"
+  cmd = "gitleaks git --no-banner ."
+  cache = false
+  deps { verifyTools }
+}
+
 /// Secret-leak gate. Scans the file set about to be pushed via the
 /// asymmetric `<upstream>..HEAD` diff (`@{push}` first, falling back to
 /// `@{u}`). On a brand-new branch with no upstream, scans full history.
@@ -54,4 +81,4 @@ local prePush: Task = new {
   deps { gitleaks }
 }
 
-tasks { setup; gitleaks; prePush }
+tasks { setup; verifyTools; gitleaks; ci; prePush }

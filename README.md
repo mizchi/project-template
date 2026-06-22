@@ -32,6 +32,19 @@ is otherwise enough.
 | `apm.yml` | Declares `mizchi/skills/meta/skill-selector` |
 | `init.sh` | One-shot bootstrap (Nix → `apm install` → `direnv allow`) |
 | `.claude/settings.json` | `SessionStart` hook runs `direnv allow` for the agent session |
+| `.github/workflows/test.yml` | CI: builds the devShell, runs `pkf run ci` (toolchain guard + gitleaks) and verifies APM resolution |
+
+## CI
+
+`.github/workflows/test.yml` builds the devShell via the Determinate Nix
+installer (GHA-cached) and runs the language-agnostic gate:
+
+```bash
+nix develop --command pkf run ci   # verify-tools + full-history gitleaks scan
+```
+
+Add per-project build / test tasks as `deps` of the `ci` task in `Taskfile.pkl`
+once a language is chosen — the workflow then needs no edits.
 
 ## Per-project next steps
 
