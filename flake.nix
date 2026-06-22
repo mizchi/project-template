@@ -24,9 +24,27 @@
           packages = [
             pkfire.packages.${system}.default # pkf task runner
             apm                               # skill / prompt distribution
+            pkgs.pkl                          # Taskfile.pkl evaluator (pkf's engine)
             pkgs.gitleaks                     # secret scan (pre-push hook)
             pkgs.ast-grep                     # structural search / lint
           ];
+
+          # pkf evaluates Taskfile.pkl, whose `amends` pulls the pkfire schema
+          # from pkg.pkl-lang.org. pkl runs on the bundled JVM, whose truststore
+          # does NOT chain to that host's CA — so the very first fetch fails with
+          # an SSL handshake error on Claude Code web and in CI alike. Warm the
+          # pkl package cache once using the system CA bundle; every later `pkf`
+          # invocation (here, via direnv, or `nix develop --command` in CI) then
+          # hits the on-disk cache and needs neither network nor the JVM trust.
+          shellHook = ''
+            export NIX_SSL_CERT_FILE="''${NIX_SSL_CERT_FILE:-/etc/ssl/certs/ca-certificates.crt}"
+            if [ -f Taskfile.pkl ] && \
+               [ ! -d "''${HOME:-/root}/.pkl/cache/package-2/pkg.pkl-lang.org" ]; then
+              echo "warming pkl package cache (system CA)…" >&2
+              pkl eval --ca-certificates="$NIX_SSL_CERT_FILE" Taskfile.pkl >/dev/null 2>&1 \
+                || echo "pkl cache warm failed — pkf may need network + a CA bundle" >&2
+            fi
+          '';
         };
       })
     // {

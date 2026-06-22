@@ -17,20 +17,22 @@ nix flake init -t github:mizchi/project-template
 ./init.sh
 ```
 
-Installs single-user Nix (sandbox off) when absent, materializes the devShell,
-and runs `apm install`. With direnv hooked into your shell, `cd` into the repo
-is otherwise enough.
+Installs single-user Nix when absent (sandbox on where the kernel allows
+unprivileged user namespaces, off otherwise), materializes the devShell, and
+runs `apm install`. With direnv hooked into your shell, `cd` into the repo is
+otherwise enough.
 
 ## What's inside
 
 | File | Role |
 |------|------|
-| `flake.nix` | devShell (`pkf`, `apm`, `gitleaks`, `ast-grep`) + `nix flake init -t` template output |
+| `flake.nix` | devShell (`pkf`, `apm`, `pkl`, `gitleaks`, `ast-grep`) + a `shellHook` that warms the pkl package cache; also the `nix flake init -t` template output |
 | `apm.nix` | Vendored derivation for `apm` (PyInstaller native binary, not in nixpkgs) |
 | `.envrc` | `use flake` + idempotent `pkf hooks install` |
 | `Taskfile.pkl` | pkfire tasks; `pre-push` runs a gitleaks secret scan |
 | `apm.yml` | Declares `mizchi/skills/meta/skill-selector` |
 | `init.sh` | One-shot bootstrap (Nix → `apm install` → `direnv allow`) |
+| `CLAUDE.md` | Agent/human guide: bootstrap, devShell, tasks, toolchain gotchas (`AGENTS.md` is a symlink to it) |
 | `.claude/settings.json` | `SessionStart` hook runs `direnv allow` for the agent session |
 | `.github/workflows/test.yml` | CI: builds the devShell, runs `pkf run ci` (toolchain guard + gitleaks) and verifies APM resolution |
 
