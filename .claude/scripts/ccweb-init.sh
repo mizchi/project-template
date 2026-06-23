@@ -177,7 +177,15 @@ rm -rf /homeless-shelter 2>/dev/null || true
 echo "==> Building devShell and installing APM dependencies"
 # The devShell's shellHook warms the pkl package cache (system CA) before this
 # runs, so `apm install` and later `pkf` invocations work offline.
-nix develop --command sh -c 'apm install'
+#
+# Non-fatal: the nix toolchain (steps above) is the load-bearing part of the
+# bootstrap. `apm install` resolves skills from GitHub and can hit unauthenticated
+# rate limits or transient failures with no token present. Because the SessionStart
+# hook is synchronous, a hard failure here would abort session start even though the
+# toolchain is ready — so degrade gracefully and let the user re-run it later.
+if ! nix develop --command sh -c 'apm install'; then
+  echo "==> apm install failed (non-fatal) — re-run later with: pkf run setup" >&2
+fi
 
 if command -v direnv >/dev/null 2>&1; then
   echo "==> direnv allow"

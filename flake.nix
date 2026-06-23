@@ -6,7 +6,13 @@
     flake-utils.url = "github:numtide/flake-utils";
     # pkf task runner. Pinned to the latest published tag so `nix develop`
     # gives the same binary on every machine and on Claude Code web.
-    pkfire.url = "github:mizchi/pkfire/v0.9.0";
+    # `follows` dedupes pkfire's transitive nixpkgs/flake-utils onto ours,
+    # shrinking the store closure and improving cache hit rate.
+    pkfire = {
+      url = "github:mizchi/pkfire/v0.9.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   outputs = { self, nixpkgs, flake-utils, pkfire }:
