@@ -33,15 +33,32 @@ local verifyTools: Task = new {
   cache = false
 }
 
+/// pkfire "spec" check: lint the task graph for dead code / suspicious
+/// definitions and assert Taskfile.pkl is canonically formatted. Runs in CI
+/// as a dep of `ci`, so a drifted or malformed Taskfile fails the gate before
+/// any per-project task does. Both are nested `pkf` calls (see recipe 15).
+local spec: Task = new {
+  name = "spec"
+  description = "pkfire spec: pkf lint + pkf format --check"
+  cmd =
+    #"""
+    set -euo pipefail
+    pkf lint
+    pkf format --check
+    """#
+  cache = false
+}
+
 /// CI gate. Full-history secret scan (CI checks out fetch-depth: 0) plus the
-/// toolchain guard. Language-agnostic by design — per-project build / test
-/// tasks should be added here as `deps` once a language is chosen.
+/// toolchain guard and pkfire spec check. Language-agnostic by design —
+/// per-project build / test tasks should be added here as `deps` once a
+/// language is chosen.
 local ci: Task = new {
   name = "ci"
-  description = "CI gate: toolchain guard + full-history secret scan"
+  description = "CI gate: toolchain guard + pkfire spec + full-history secret scan"
   cmd = "gitleaks git --no-banner ."
   cache = false
-  deps { verifyTools }
+  deps { verifyTools; spec }
 }
 
 /// Secret-leak gate. Scans the file set about to be pushed via the
@@ -81,4 +98,4 @@ local prePush: Task = new {
   deps { gitleaks }
 }
 
-tasks { setup; verifyTools; gitleaks; ci; prePush }
+tasks { setup; verifyTools; spec; gitleaks; ci; prePush }

@@ -1,7 +1,18 @@
 lockfile_version: '1'
-generated_at: '2026-06-22T16:55:15.449963+00:00'
+generated_at: '2026-06-23T12:44:53.004134+00:00'
 apm_version: 0.8.11
 dependencies:
+- repo_url: mizchi/pkfire
+  host: github.com
+  resolved_commit: 77aa9899658d328eaa4280cc944c4aaa4422d3a9
+  resolved_ref: 77aa9899658d328eaa4280cc944c4aaa4422d3a9
+  virtual_path: skills/pkfire
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .claude/skills/pkfire
+  - .github/skills/pkfire
+  content_hash: sha256:12cddcc62735b34b53718557f51ce64f82595b4f08599fc2b3eaa11e3db074b7
 - repo_url: mizchi/skills
   host: github.com
   resolved_commit: 89c1b34018ba0d85a770c065ba22f83a8d004d34

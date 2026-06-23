@@ -59,7 +59,8 @@ Tasks are defined in `Taskfile.pkl` and run with `pkf`:
 
 ```bash
 pkf list           # list tasks
-pkf run ci         # CI gate: verify-tools + full-history gitleaks scan
+pkf run ci         # CI gate: verify-tools + spec + full-history gitleaks scan
+pkf run spec       # pkfire spec: pkf lint + pkf format --check
 pkf run setup      # apm install
 ```
 
