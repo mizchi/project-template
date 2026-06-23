@@ -26,8 +26,7 @@ otherwise enough.
 
 | File | Role |
 |------|------|
-| `flake.nix` | devShell (`pkf`, `apm`, `pkl`, `gitleaks`, `ast-grep`) + a `shellHook` that warms the pkl package cache; also the `nix flake init -t` template output |
-| `apm.nix` | Vendored derivation for `apm` (PyInstaller native binary, not in nixpkgs) |
+| `flake.nix` | devShell (`pkf`, `apm`, `pkl`, `gitleaks`, `ast-grep`) + a `shellHook` that warms the pkl package cache; also the `nix flake init -t` template output. The `apm` derivation (a PyInstaller native binary, not in nixpkgs) is built inline here |
 | `.envrc` | `use flake` + idempotent `pkf hooks install` |
 | `Taskfile.pkl` | pkfire tasks; `pre-push` runs a gitleaks secret scan |
 | `apm.yml` | Declares `mizchi/skills/meta/skill-selector` |
