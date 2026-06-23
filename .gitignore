@@ -11,3 +11,6 @@ apm_modules/
 
 # Local env overrides
 .env.local
+
+# Claude Code per-user local settings (machine-specific permissions etc.)
+.claude/settings.local.json
