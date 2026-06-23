@@ -13,9 +13,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    # pkspec: language-agnostic, Pkl-based spec & test runner (pkfire's
+    # testing sibling). Ships a Go binary, so we pull the prebuilt package
+    # from its flake rather than `follows` — its build pins a specific Go /
+    # pkl-native toolchain we don't want to override with ours.
+    pkspec.url = "github:mizchi/pkspec/v0.3.0";
   };
 
-  outputs = { self, nixpkgs, flake-utils, pkfire }:
+  outputs = { self, nixpkgs, flake-utils, pkfire, pkspec }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -79,6 +84,7 @@
           # language-agnostic. Add nodejs / rust / etc. per project.
           packages = [
             pkfire.packages.${system}.default # pkf task runner
+            pkspec.packages.${system}.default # pkspec spec / test runner
             apm                               # skill / prompt distribution
             pkgs.pkl                          # Taskfile.pkl evaluator (pkf's engine)
             pkgs.gitleaks                     # secret scan (pre-push hook)

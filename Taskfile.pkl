@@ -21,11 +21,11 @@ local setup: Task = new {
 /// guard: if the flake drifts and a tool drops out, CI fails here.
 local verifyTools: Task = new {
   name = "verify-tools"
-  description = "Assert the devShell exposes pkf / apm / gitleaks / ast-grep"
+  description = "Assert the devShell exposes pkf / apm / pkspec / gitleaks / ast-grep"
   cmd =
     #"""
     set -euo pipefail
-    for t in pkf apm gitleaks ast-grep; do
+    for t in pkf apm pkspec gitleaks ast-grep; do
       command -v "$t" >/dev/null || { echo "missing tool: $t" >&2; exit 1; }
     done
     echo "tools ok"
@@ -33,18 +33,19 @@ local verifyTools: Task = new {
   cache = false
 }
 
-/// pkfire "spec" check: lint the task graph for dead code / suspicious
-/// definitions and assert Taskfile.pkl is canonically formatted. Runs in CI
-/// as a dep of `ci`, so a drifted or malformed Taskfile fails the gate before
-/// any per-project task does. Both are nested `pkf` calls (see recipe 15).
+/// pkspec spec/test gate. `pkspec init` re-materializes the embedded Pkl
+/// schemas under `schemas/` (gitignored — the Go/Nix binary owns them, like
+/// apm's deployed skills), then `pkspec exec` runs every Test in `Test.pkl`.
+/// Wired as a dep of `ci`. Author project tests in `Test.pkl`; the shipped
+/// `smoke` test keeps the gate green out of the box.
 local spec: Task = new {
   name = "spec"
-  description = "pkfire spec: pkf lint + pkf format --check"
+  description = "pkspec spec runner: regenerate schemas + exec Test.pkl"
   cmd =
     #"""
     set -euo pipefail
-    pkf lint
-    pkf format --check
+    pkspec init --dir schemas --force >/dev/null
+    pkspec exec -f Test.pkl
     """#
   cache = false
 }

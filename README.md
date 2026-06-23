@@ -11,7 +11,7 @@ nix flake init -t github:mizchi/project-template   # scaffold a fresh repo
 ```
 
 The bootstrap installs single-user Nix when absent, materializes the devShell
-(`pkf`, `apm`, `pkl`, `gitleaks`, `ast-grep`), and runs `apm install`. With
+(`pkf`, `pkspec`, `apm`, `pkl`, `gitleaks`, `ast-grep`), and runs `apm install`. With
 direnv hooked, `cd` into the repo is enough; on Claude Code web a `SessionStart`
 hook runs it for you.
 
