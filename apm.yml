@@ -13,5 +13,17 @@ dependencies:
     # Pinned to a commit (matches apm.lock.yaml) so resolution is reproducible
     # and `apm install` stops warning about drift.
     - mizchi/skills/meta/skill-selector#89c1b34018ba0d85a770c065ba22f83a8d004d34
+    # MoonBit agent skills (moonbitlang/skills). This branch carries the
+    # MoonBit toolchain, so the matching skills ship with it. All pinned to
+    # one commit for reproducibility.
+    - moonbitlang/skills/skills/moonbit-orientation#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/moonbit-agent-guide#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/moonbit-refactoring#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/moonbit-spec-test-development#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/moonbit-extract-spec-test#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/moonbit-proof#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/moonbit-c-binding#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/make-moonbit-c-bindings#c3f061da2abf7c6914e06df93572858dd21ef6bc
+    - moonbitlang/skills/skills/ocaml2moonbit-migration#c3f061da2abf7c6914e06df93572858dd21ef6bc
   mcp: []
 scripts: {}

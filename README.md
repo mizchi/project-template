@@ -5,7 +5,9 @@ No language runtime is baked in — add one per project.
 
 > **`moonbit` branch:** demonstrates the per-project language layer. It adds the
 > [moonbit-overlay](https://github.com/moonbit-community/moonbit-overlay) flake
-> input and ships the MoonBit toolchain (`moon` / `moonc`) in the devShell.
+> input and ships the MoonBit toolchain (`moon` / `moonc`) in the devShell, and
+> declares the [moonbitlang/skills](https://github.com/moonbitlang/skills) agent
+> skills in `apm.yml` (deployed by `apm install`, pinned in `apm.lock.yaml`).
 > Verified: `nix develop` → `moon new` → `moon run cmd/main` works end to end.
 
 ## Use it
