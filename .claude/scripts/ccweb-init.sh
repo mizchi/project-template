@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # One-shot bootstrap for a fresh clone, including the Claude Code web sandbox.
+# On Claude Code web the SessionStart hook runs this automatically; run it by
+# hand for a fresh local clone:
 #
-#   git clone <repo> && cd <repo> && ./init.sh
+#   git clone <repo> && cd <repo> && ./.claude/scripts/ccweb-init.sh
 #
 # It is idempotent and safe to re-run. Steps:
 #   1. Pick the right nix sandbox setting for this kernel and write nix.conf.
@@ -12,6 +14,11 @@
 #   4. Materialize the devShell and run `apm install`.
 #   5. `direnv allow` so subsequent shells auto-load the env.
 set -euo pipefail
+
+# Run from the repo root regardless of where we were invoked from: the script
+# now lives under .claude/scripts/, but `nix develop` and `direnv allow .`
+# below need the flake at the repo root as the working directory.
+cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 NIX_VERSION="2.24.9"
 CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
