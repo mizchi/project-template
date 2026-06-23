@@ -30,6 +30,15 @@ It is idempotent. It:
 With direnv hooked into your shell, `cd` into the repo is otherwise enough
 (`.envrc` runs `use flake`).
 
+On **Claude Code web** you don't run this by hand: the `SessionStart` hook in
+`.claude/settings.json` (`.claude/hooks/session-start.sh`) runs `./init.sh`
+automatically before the session starts, so `nix` and the toolchain are on
+PATH from the first command. The hook is gated on `CLAUDE_CODE_REMOTE=true`, so
+local sessions are left to manage their own nix/direnv. It is synchronous —
+the session waits for the bootstrap to finish — which trades a slower start for
+a guarantee that tools are ready (no race). Switch the hook to async mode if
+you prefer a faster startup.
+
 ## Dev environment
 
 Everything lives in the nix devShell — never assume host tools.
