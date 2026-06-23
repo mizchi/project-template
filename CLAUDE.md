@@ -14,12 +14,18 @@ On a fresh clone or a new Claude Code web session:
 
 It is idempotent. It:
 
-1. Probes for unprivileged user namespaces and writes `/etc/nix/nix.conf` with
-   `sandbox = true` when available (else `false`). It rewrites the file every
-   run, so a stale clone self-heals.
+1. Probes for unprivileged user namespaces (with a short retry, since the
+   probe can spuriously fail very early in container boot) and writes
+   `/etc/nix/nix.conf` with `sandbox = true` when available (else `false`). It
+   also pins `ssl-cert-file` to the system CA so fetches don't depend on
+   `NIX_SSL_CERT_FILE`. The file is rewritten every run, so a stale clone
+   self-heals.
 2. Installs single-user Nix when absent (or just sources an already-installed
    profile).
-3. Builds the devShell and runs `apm install`.
+3. Makes `nix` reachable from every shell — `/etc/profile.d/nix.sh` (login),
+   a guarded `~/.bashrc` block (interactive), and symlinks in `/usr/local/bin`
+   (non-interactive CI / Claude Code tool shells, which source no rc file).
+4. Builds the devShell and runs `apm install`.
 
 With direnv hooked into your shell, `cd` into the repo is otherwise enough
 (`.envrc` runs `use flake`).
