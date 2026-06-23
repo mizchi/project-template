@@ -14,13 +14,14 @@ nix flake init -t github:mizchi/project-template
 ## Bootstrap (fresh clone / Claude Code web)
 
 ```bash
-./init.sh
+./.claude/scripts/ccweb-init.sh
 ```
 
 Installs single-user Nix when absent (sandbox on where the kernel allows
 unprivileged user namespaces, off otherwise), materializes the devShell, and
 runs `apm install`. With direnv hooked into your shell, `cd` into the repo is
-otherwise enough.
+otherwise enough. On Claude Code web the `SessionStart` hook runs this script
+automatically, so you never have to remember it.
 
 ## What's inside
 
@@ -30,9 +31,9 @@ otherwise enough.
 | `.envrc` | `use flake` + idempotent `pkf hooks install` |
 | `Taskfile.pkl` | pkfire tasks; `pre-push` runs a gitleaks secret scan |
 | `apm.yml` | Declares `mizchi/skills/meta/skill-selector` |
-| `init.sh` | One-shot bootstrap (Nix → `apm install` → `direnv allow`) |
+| `.claude/scripts/ccweb-init.sh` | One-shot bootstrap (Nix → `apm install` → `direnv allow`), run by the `SessionStart` hook on Claude Code web |
 | `CLAUDE.md` | Agent/human guide: bootstrap, devShell, tasks, toolchain gotchas (`AGENTS.md` is a symlink to it) |
-| `.claude/settings.json` | `SessionStart` hook runs `direnv allow` for the agent session |
+| `.claude/settings.json` | `SessionStart` hook runs `.claude/scripts/ccweb-init.sh` so the toolchain is on PATH from the first command on Claude Code web |
 | `.github/workflows/test.yml` | CI: builds the devShell, runs `pkf run ci` (toolchain guard + gitleaks) and verifies APM resolution |
 
 ## CI

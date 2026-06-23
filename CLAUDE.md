@@ -9,7 +9,7 @@ Claude Code web. No language runtime is baked in — add one per project.
 On a fresh clone or a new Claude Code web session:
 
 ```bash
-./init.sh
+./.claude/scripts/ccweb-init.sh
 ```
 
 It is idempotent. It:
@@ -31,8 +31,9 @@ With direnv hooked into your shell, `cd` into the repo is otherwise enough
 (`.envrc` runs `use flake`).
 
 On **Claude Code web** you don't run this by hand: the `SessionStart` hook in
-`.claude/settings.json` (`.claude/hooks/session-start.sh`) runs `./init.sh`
-automatically before the session starts, so `nix` and the toolchain are on
+`.claude/settings.json` (`.claude/hooks/session-start.sh`) runs
+`.claude/scripts/ccweb-init.sh` automatically before the session starts, so
+`nix` and the toolchain are on
 PATH from the first command. The hook is gated on `CLAUDE_CODE_REMOTE=true`, so
 local sessions are left to manage their own nix/direnv. It is synchronous —
 the session waits for the bootstrap to finish — which trades a slower start for
@@ -71,7 +72,7 @@ workflow then needs no edits.
 - **Sandbox must be on.** With `sandbox = false`, nix builds run with
   `HOME=/homeless-shelter` on the real filesystem; pkfire's Go build writes
   telemetry there and the *next* build aborts with
-  `home directory '/homeless-shelter' exists`. `init.sh` enables the sandbox
+  `home directory '/homeless-shelter' exists`. `ccweb-init.sh` enables the sandbox
   where the kernel allows it; if you see that error, check `nix.conf` and
   remove `/homeless-shelter`.
 - **pkl needs the system CA once.** `pkf` evaluates `Taskfile.pkl`, whose
