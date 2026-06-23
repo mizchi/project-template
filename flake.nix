@@ -7,12 +7,18 @@
     # pkf task runner. Pinned to the latest published tag so `nix develop`
     # gives the same binary on every machine and on Claude Code web.
     pkfire.url = "github:mizchi/pkfire/v0.9.0";
+    # MoonBit toolchain (moon / moonc / …) as a reproducible nix overlay.
+    # This is the per-project language layer the base template leaves out.
+    moonbit-overlay.url = "github:moonbit-community/moonbit-overlay";
   };
 
-  outputs = { self, nixpkgs, flake-utils, pkfire }:
+  outputs = { self, nixpkgs, flake-utils, pkfire, moonbit-overlay }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ moonbit-overlay.overlays.default ];
+        };
 
         # apm ships as a PyInstaller native binary, not an nixpkgs package, so
         # we build the derivation inline here rather than vendoring an apm.nix.
@@ -77,6 +83,7 @@
             pkgs.pkl                          # Taskfile.pkl evaluator (pkf's engine)
             pkgs.gitleaks                     # secret scan (pre-push hook)
             pkgs.ast-grep                     # structural search / lint
+            pkgs.moonbit-bin.moonbit.latest   # MoonBit toolchain (moon / moonc / …)
           ];
 
           # pkf evaluates Taskfile.pkl, whose `amends` pulls the pkfire schema
