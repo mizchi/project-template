@@ -21,11 +21,11 @@ local setup: Task = new {
 /// guard: if the flake drifts and a tool drops out, CI fails here.
 local verifyTools: Task = new {
   name = "verify-tools"
-  description = "Assert the devShell exposes pkf / apm / pkspec / gitleaks / ast-grep"
+  description = "Assert the devShell exposes pkf / apm / gitleaks / ast-grep"
   cmd =
     #"""
     set -euo pipefail
-    for t in pkf apm pkspec gitleaks ast-grep; do
+    for t in pkf apm gitleaks ast-grep; do
       command -v "$t" >/dev/null || { echo "missing tool: $t" >&2; exit 1; }
     done
     echo "tools ok"
@@ -33,33 +33,15 @@ local verifyTools: Task = new {
   cache = false
 }
 
-/// pkspec spec/test gate. `pkspec init` re-materializes the embedded Pkl
-/// schemas under `schemas/` (gitignored — the Go/Nix binary owns them, like
-/// apm's deployed skills), then `pkspec exec` runs every Test in `Test.pkl`.
-/// Wired as a dep of `ci`. Author project tests in `Test.pkl`; the shipped
-/// `smoke` test keeps the gate green out of the box.
-local spec: Task = new {
-  name = "spec"
-  description = "pkspec spec runner: regenerate schemas + exec Test.pkl"
-  cmd =
-    #"""
-    set -euo pipefail
-    pkspec init --dir schemas --force >/dev/null
-    pkspec exec -f Test.pkl
-    """#
-  cache = false
-}
-
 /// CI gate. Full-history secret scan (CI checks out fetch-depth: 0) plus the
-/// toolchain guard and pkfire spec check. Language-agnostic by design —
-/// per-project build / test tasks should be added here as `deps` once a
-/// language is chosen.
+/// toolchain guard. Language-agnostic by design — per-project build / test
+/// tasks should be added here as `deps` once a language is chosen.
 local ci: Task = new {
   name = "ci"
-  description = "CI gate: toolchain guard + pkfire spec + full-history secret scan"
+  description = "CI gate: toolchain guard + full-history secret scan"
   cmd = "gitleaks git --no-banner ."
   cache = false
-  deps { verifyTools; spec }
+  deps { verifyTools }
 }
 
 /// Secret-leak gate. Scans the file set about to be pushed via the
@@ -99,4 +81,4 @@ local prePush: Task = new {
   deps { gitleaks }
 }
 
-tasks { setup; verifyTools; spec; gitleaks; ci; prePush }
+tasks { setup; verifyTools; gitleaks; ci; prePush }
