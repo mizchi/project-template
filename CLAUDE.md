@@ -49,9 +49,10 @@ nix develop                    # enter the shell
 nix develop --command <cmd>    # run one command in it
 ```
 
-The devShell provides: `pkf` (task runner), `apm` (skill/prompt distribution),
-`pkl` (Taskfile engine), `gitleaks` (secret scan), `ast-grep` (structural
-search). There is intentionally **no** language runtime.
+The devShell provides: `pkf` (task runner, MoonBit — embeds its own Pkl
+evaluator), `apm` (skill/prompt distribution), `pkl` (Pkl CLI, optional — for
+authoring `Taskfile.pkl` directly), `gitleaks` (secret scan), `ast-grep`
+(structural search). There is intentionally **no** language runtime.
 
 ## Tasks
 
@@ -69,19 +70,13 @@ workflow then needs no edits.
 
 ## Gotchas (read before debugging the toolchain)
 
-- **Sandbox must be on.** With `sandbox = false`, nix builds run with
-  `HOME=/homeless-shelter` on the real filesystem; pkfire's Go build writes
-  telemetry there and the *next* build aborts with
-  `home directory '/homeless-shelter' exists`. `ccweb-init.sh` enables the sandbox
-  where the kernel allows it; if you see that error, check `nix.conf` and
-  remove `/homeless-shelter`.
-- **pkl needs the system CA once.** `pkf` evaluates `Taskfile.pkl`, whose
-  `amends` fetches the pkfire schema from `pkg.pkl-lang.org`. pkl's bundled JVM
-  truststore does not chain to that host, so the first fetch fails with an SSL
-  handshake error. The devShell `shellHook` warms the pkl package cache with
-  the system CA bundle; later `pkf` runs hit the cache offline. If a fetch
-  fails, ensure `NIX_SSL_CERT_FILE` points at a real bundle and re-enter the
-  shell.
+- **pkf needs a CA bundle for its first fetch.** The MoonBit `pkf` embeds its
+  own Pkl evaluator (no JVM, no external `pkl`), but its first evaluation of
+  `Taskfile.pkl` fetches the pkfire schema from `pkg.pkl-lang.org` over HTTPS.
+  Claude Code web / CI lack a default CA bundle, so the devShell `shellHook`
+  exports `NIX_SSL_CERT_FILE` / `SSL_CERT_FILE`; after the first run pkf serves
+  the schema from its on-disk cache offline. If a fetch fails, ensure those
+  point at a real bundle and re-enter the shell.
 
 ## Conventions
 

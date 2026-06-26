@@ -4,12 +4,20 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    # pkf task runner. Pinned to the latest published tag so `nix develop`
-    # gives the same binary on every machine and on Claude Code web.
-    # `follows` dedupes pkfire's transitive nixpkgs/flake-utils onto ours,
-    # shrinking the store closure and improving cache hit rate.
+    # pkf task runner — the MoonBit build (pkfire >= 0.12). A single
+    # self-contained native binary that embeds its own Pkl evaluator, so
+    # it needs neither a JVM nor an external `pkl` to evaluate Taskfile.pkl.
+    # Pinned to a published tag so `nix develop` gives the same binary on
+    # every machine and on Claude Code web (the flake fetches the prebuilt
+    # release tarball — no source build). `follows` dedupes pkfire's
+    # transitive nixpkgs/flake-utils onto ours to shrink the store closure.
     pkfire = {
-      url = "github:mizchi/pkfire/v0.9.0";
+      # NOTE: pinned to a COMMIT, not the `v0.12.1` tag. pkfire's binary-fetch
+      # flake reads the version+sha256 from `nix/pkf-release.json`, which is
+      # synced AFTER the release tag is cut — so the `v0.12.1` tag still serves
+      # the previous binary. This commit is the post-sync state that actually
+      # fetches the 0.12.1 binary.
+      url = "github:mizchi/pkfire/63ccd98c925e4ba5d2c535a14a5009d8894a7e80";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -78,28 +86,22 @@
           # Intentionally NO language runtime here — this template is
           # language-agnostic. Add nodejs / rust / etc. per project.
           packages = [
-            pkfire.packages.${system}.default # pkf task runner
+            pkfire.packages.${system}.default # pkf task runner (MoonBit, embeds its Pkl evaluator)
             apm                               # skill / prompt distribution
-            pkgs.pkl                          # Taskfile.pkl evaluator (pkf's engine)
+            pkgs.pkl                          # Pkl CLI — optional, for authoring/evaluating Taskfile.pkl directly
             pkgs.gitleaks                     # secret scan (pre-push hook)
             pkgs.ast-grep                     # structural search / lint
           ];
 
-          # pkf evaluates Taskfile.pkl, whose `amends` pulls the pkfire schema
-          # from pkg.pkl-lang.org. pkl runs on the bundled JVM, whose truststore
-          # does NOT chain to that host's CA — so the very first fetch fails with
-          # an SSL handshake error on Claude Code web and in CI alike. Warm the
-          # pkl package cache once using the system CA bundle; every later `pkf`
-          # invocation (here, via direnv, or `nix develop --command` in CI) then
-          # hits the on-disk cache and needs neither network nor the JVM trust.
+          # The MoonBit `pkf` embeds its own Pkl evaluator and manages its own
+          # package cache, so there is no JVM truststore to warm. Its first
+          # fetch of the pkfire schema from pkg.pkl-lang.org still goes over
+          # HTTPS, so export a real CA bundle (Claude Code web / CI lack a
+          # default one); after the first run pkf serves the schema from its
+          # on-disk cache offline.
           shellHook = ''
             export NIX_SSL_CERT_FILE="''${NIX_SSL_CERT_FILE:-/etc/ssl/certs/ca-certificates.crt}"
-            if [ -f Taskfile.pkl ] && \
-               [ ! -d "''${HOME:-/root}/.pkl/cache/package-2/pkg.pkl-lang.org" ]; then
-              echo "warming pkl package cache (system CA)…" >&2
-              pkl eval --ca-certificates="$NIX_SSL_CERT_FILE" Taskfile.pkl >/dev/null 2>&1 \
-                || echo "pkl cache warm failed — pkf may need network + a CA bundle" >&2
-            fi
+            export SSL_CERT_FILE="''${SSL_CERT_FILE:-$NIX_SSL_CERT_FILE}"
           '';
         };
       })

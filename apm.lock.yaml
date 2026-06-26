@@ -1,18 +1,59 @@
 lockfile_version: '1'
-generated_at: '2026-06-23T12:44:53.004134+00:00'
-apm_version: 0.8.11
+generated_at: '2026-06-26T15:26:35.069224+00:00'
+apm_version: 0.21.0
 dependencies:
 - repo_url: mizchi/pkfire
   host: github.com
-  resolved_commit: 77aa9899658d328eaa4280cc944c4aaa4422d3a9
-  resolved_ref: 77aa9899658d328eaa4280cc944c4aaa4422d3a9
+  resolved_commit: 20f3763906502de29f5d3409cae42ac9fe2ea4f0
+  resolved_ref: 20f3763906502de29f5d3409cae42ac9fe2ea4f0
   virtual_path: skills/pkfire
   is_virtual: true
   package_type: claude_skill
   deployed_files:
   - .claude/skills/pkfire
+  - .claude/skills/pkfire/SKILL.md
+  - .claude/skills/pkfire/assets/recipes/01-build-and-test.pkl
+  - .claude/skills/pkfire/assets/recipes/02-multi-platform-matrix.pkl
+  - .claude/skills/pkfire/assets/recipes/03-monorepo.pkl
+  - .claude/skills/pkfire/assets/recipes/04-dev-watch.pkl
+  - .claude/skills/pkfire/assets/recipes/05-remote-cache.pkl
+  - .claude/skills/pkfire/assets/recipes/06-split-and-import.pkl
+  - .claude/skills/pkfire/assets/recipes/07-hierarchical-amends.pkl
+  - .claude/skills/pkfire/assets/recipes/08-services.pkl
+  - .claude/skills/pkfire/assets/recipes/09-test-against-services.pkl
+  - .claude/skills/pkfire/assets/recipes/10-args-passthrough.pkl
+  - .claude/skills/pkfire/assets/recipes/11-named-params.pkl
+  - .claude/skills/pkfire/assets/recipes/12-task-library.pkl
+  - .claude/skills/pkfire/assets/recipes/13-git-hooks.pkl
+  - .claude/skills/pkfire/assets/recipes/14-secretlint-pre-push.pkl
+  - .claude/skills/pkfire/assets/recipes/15-diagnostics-and-lint.pkl
+  - .claude/skills/pkfire/assets/recipes/16-release-version-bump.pkl
+  - .claude/skills/pkfire/assets/recipes/17-pkspec-checks.pkl
+  - .claude/skills/pkfire/assets/recipes/18-pkspec-check-pre-push.pkl
+  - .claude/skills/pkfire/assets/recipes/19-spec-task-link.pkl
   - .github/skills/pkfire
-  content_hash: sha256:12cddcc62735b34b53718557f51ce64f82595b4f08599fc2b3eaa11e3db074b7
+  deployed_file_hashes:
+    .claude/skills/pkfire/SKILL.md: sha256:3c1bcd5bcc778e706ee861c7e4d18b8d2d493a0d4005fb1b91acc4c71927924d
+    .claude/skills/pkfire/assets/recipes/01-build-and-test.pkl: sha256:df44a35b0b55c960557468a0c9c6dafa0052feafc52d118e373ab519feaacde8
+    .claude/skills/pkfire/assets/recipes/02-multi-platform-matrix.pkl: sha256:a2f85e11f6c6a3abc1f33662d44f7723e352ca8dfbe3cc31f33abfad121fdee6
+    .claude/skills/pkfire/assets/recipes/03-monorepo.pkl: sha256:1a304ffead673529fc47f7fa2c27a4eafe8895a77eb9c85df211b218ba5b6f6c
+    .claude/skills/pkfire/assets/recipes/04-dev-watch.pkl: sha256:5ea1b6ea40acfd21650c807bb0cdd81e6ad46283d0252538230a4a7630861a04
+    .claude/skills/pkfire/assets/recipes/05-remote-cache.pkl: sha256:fd576f3d6e87158e10f79b4ef8aeafbe40bfdcc19a9e8d518ebf28e5ea56dc31
+    .claude/skills/pkfire/assets/recipes/06-split-and-import.pkl: sha256:b12180b1de0f0856607375e4649f81b99272dc4173437d6f7a9dede2dd1e717d
+    .claude/skills/pkfire/assets/recipes/07-hierarchical-amends.pkl: sha256:149f9c421981bb6ec1d8a524e2dfcad4e11c32d4967e4d287a696d7f22d16474
+    .claude/skills/pkfire/assets/recipes/08-services.pkl: sha256:576a394c70f9d984b02f39b0599f1ddbf962f92ef943bacaf823e5c1fd5cc156
+    .claude/skills/pkfire/assets/recipes/09-test-against-services.pkl: sha256:459c2078ece53709f674407289d42eedc5856fc9f0210786ab3fa3e9364d91f8
+    .claude/skills/pkfire/assets/recipes/10-args-passthrough.pkl: sha256:def0e8e94843d1082db6240877feddda35bd0d215d565daca0c3e3a8b8f0a45b
+    .claude/skills/pkfire/assets/recipes/11-named-params.pkl: sha256:abd45a795f5a0b954a201888f668e362fa94672f70d06c5de2f354af9ebbda1a
+    .claude/skills/pkfire/assets/recipes/12-task-library.pkl: sha256:983418213fb87a7d90b1ec37d75314e60d44dd1eeaf0f14bbcbb19a65cdd759a
+    .claude/skills/pkfire/assets/recipes/13-git-hooks.pkl: sha256:4d71b010e2d31160d30e8db77e9252c50a316a857de06052c09d288cef034c4d
+    .claude/skills/pkfire/assets/recipes/14-secretlint-pre-push.pkl: sha256:c1e816e159db3dacba2667c7bad3f0cbc297988bff6222003efdbba9e11ce628
+    .claude/skills/pkfire/assets/recipes/15-diagnostics-and-lint.pkl: sha256:49e1e64ecb39e5ce5e1ba87970b6c06effd9f707cce10693a48030d2655319f3
+    .claude/skills/pkfire/assets/recipes/16-release-version-bump.pkl: sha256:69e3d6c2717e40bea760d9c56b1ce1103c6ddb66d957e11bcb10087f599215ee
+    .claude/skills/pkfire/assets/recipes/17-pkspec-checks.pkl: sha256:30c44ecfdcd87c5c255ea27fdfdb1d7f8e5219878e29607c2ba6bc105c430565
+    .claude/skills/pkfire/assets/recipes/18-pkspec-check-pre-push.pkl: sha256:e9a8395ad81035861ca0f2cc43550f9409cbdd5ec21a9a74e8a138bc8c04709a
+    .claude/skills/pkfire/assets/recipes/19-spec-task-link.pkl: sha256:38d69c83a7eb13ebdb266ed2fb28d2f114b66b471afa47aaff15a7c041a1851f
+  content_hash: sha256:1ec8a85d9b409bdec51d06072cc91c2aa1341b9498ef32cc8176f852bb4b815e
 - repo_url: mizchi/skills
   host: github.com
   resolved_commit: 89c1b34018ba0d85a770c065ba22f83a8d004d34
@@ -22,5 +63,18 @@ dependencies:
   package_type: claude_skill
   deployed_files:
   - .claude/skills/skill-selector
+  - .claude/skills/skill-selector/SKILL.md
+  - .claude/skills/skill-selector/evals/eval.yaml
+  - .claude/skills/skill-selector/evals/ledger.yaml
+  - .claude/skills/skill-selector/evals/tasks/scenario-a-typescript-init.yaml
+  - .claude/skills/skill-selector/evals/tasks/scenario-b-edge.yaml
+  - .claude/skills/skill-selector/references/catalog.md
   - .github/skills/skill-selector
+  deployed_file_hashes:
+    .claude/skills/skill-selector/SKILL.md: sha256:35b861269d7c73b905beeb3a0a086290dce3b338f7df6553dc30b8a4be9941a9
+    .claude/skills/skill-selector/evals/eval.yaml: sha256:367f2ebf588d83086bdf33dd22fe0b29c028f4cb9c013322f17e450733da0637
+    .claude/skills/skill-selector/evals/ledger.yaml: sha256:77073331f5075f1f094272eddfd93c505776603a060f176a13f442a8c02004f8
+    .claude/skills/skill-selector/evals/tasks/scenario-a-typescript-init.yaml: sha256:3ea2f3c1130646b0b51f133cfd17d2184fb2d9745953ad13f4235e3d10ce69bf
+    .claude/skills/skill-selector/evals/tasks/scenario-b-edge.yaml: sha256:c46a381c5208c11ec395d6f9c3336b13e5a23fcd90129454c196ff0e5b3d116b
+    .claude/skills/skill-selector/references/catalog.md: sha256:4c85b082a187b44249de0df6ea32047b4444380f7e689df18c64930c996763f0
   content_hash: sha256:1d7eb89ebe008a668c9ad495bc8cf4e2de9e1387b6edc5033e4d4d43aba382b5
