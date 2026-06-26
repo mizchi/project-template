@@ -12,20 +12,14 @@
     # release tarball — no source build). `follows` dedupes pkfire's
     # transitive nixpkgs/flake-utils onto ours to shrink the store closure.
     pkfire = {
-      # NOTE: pinned to a COMMIT, not the `v0.12.1` tag. pkfire's binary-fetch
-      # flake reads the version+sha256 from `nix/pkf-release.json`, which is
-      # synced AFTER the release tag is cut — so the `v0.12.1` tag still serves
-      # the previous binary. This commit is the post-sync state that actually
-      # fetches the 0.12.1 binary.
-      url = "github:mizchi/pkfire/63ccd98c925e4ba5d2c535a14a5009d8894a7e80";
+      url = "github:mizchi/pkfire/v0.12.2";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
-    # pkspec — the MoonBit spec/test runner (pkspec + 5 native adapter
-    # shims). Also a self-contained binary-fetch flake; same tag-lag caveat
-    # as pkfire, so pinned to the post-sha256-sync commit for 0.4.1.
+    # pkspec — the MoonBit spec/test runner (pkspec + 5 native adapter shims),
+    # also a self-contained binary-fetch flake.
     pkspec = {
-      url = "github:mizchi/pkspec/bc27230f98034aaf6263da65a6f35aa5286a5f53";
+      url = "github:mizchi/pkspec/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };

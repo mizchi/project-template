@@ -115,17 +115,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1782484213,
-        "narHash": "sha256-0UMaXdJLQXy12hBUOhaCyon5WDLJ3RSj/CjpKCeu+7g=",
+        "lastModified": 1782490071,
+        "narHash": "sha256-o7kFXn4Pfg0hhWWLfzNXvXKK9CCGr0U/gDK82WS1hhE=",
         "owner": "mizchi",
         "repo": "pkfire",
-        "rev": "63ccd98c925e4ba5d2c535a14a5009d8894a7e80",
+        "rev": "fdf1dc82763b14985b79c9ab750214f12f6b5491",
         "type": "github"
       },
       "original": {
         "owner": "mizchi",
+        "ref": "v0.12.2",
         "repo": "pkfire",
-        "rev": "63ccd98c925e4ba5d2c535a14a5009d8894a7e80",
         "type": "github"
       }
     },
@@ -140,17 +140,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1782484234,
-        "narHash": "sha256-bTNUlLXKpdO+4lsZ2+zwUYw/kEczo8eGXKnYuroS9fU=",
+        "lastModified": 1782490806,
+        "narHash": "sha256-r9f/iQgi91b/JRxRi7rm9/rRx6meMqBR6fag/hmcfmY=",
         "owner": "mizchi",
         "repo": "pkspec",
-        "rev": "bc27230f98034aaf6263da65a6f35aa5286a5f53",
+        "rev": "e40f141ebb0627011a473df8039a8277380535e8",
         "type": "github"
       },
       "original": {
         "owner": "mizchi",
+        "ref": "v0.4.2",
         "repo": "pkspec",
-        "rev": "bc27230f98034aaf6263da65a6f35aa5286a5f53",
         "type": "github"
       }
     },
