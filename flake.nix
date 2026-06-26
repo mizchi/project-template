@@ -12,7 +12,7 @@
     # release tarball — no source build). `follows` dedupes pkfire's
     # transitive nixpkgs/flake-utils onto ours to shrink the store closure.
     pkfire = {
-      url = "github:mizchi/pkfire/v0.12.2";
+      url = "github:mizchi/pkfire/v0.12.3";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
