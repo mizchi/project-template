@@ -21,9 +21,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    # pkspec — the MoonBit spec/test runner (pkspec + 5 native adapter
+    # shims). Also a self-contained binary-fetch flake; same tag-lag caveat
+    # as pkfire, so pinned to the post-sha256-sync commit for 0.4.1.
+    pkspec = {
+      url = "github:mizchi/pkspec/bc27230f98034aaf6263da65a6f35aa5286a5f53";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, pkfire }:
+  outputs = { self, nixpkgs, flake-utils, pkfire, pkspec }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -87,6 +95,7 @@
           # language-agnostic. Add nodejs / rust / etc. per project.
           packages = [
             pkfire.packages.${system}.default # pkf task runner (MoonBit, embeds its Pkl evaluator)
+            pkspec.packages.${system}.default # pkspec spec/test runner + adapter shims (MoonBit)
             apm                               # skill / prompt distribution
             pkgs.pkl                          # Pkl CLI — optional, for authoring/evaluating Taskfile.pkl directly
             pkgs.gitleaks                     # secret scan (pre-push hook)
