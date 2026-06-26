@@ -14,8 +14,8 @@ dependencies:
     # and `apm install` stops warning about drift.
     - mizchi/skills/meta/skill-selector#89c1b34018ba0d85a770c065ba22f83a8d004d34
     # pkfire authoring skill — Taskfile.pkl recipes, lint/doctor/spec workflow.
-    # Pinned to the same commit (tag v0.9.0) as the `pkfire` flake input so the
-    # skill's guidance matches the `pkf` binary in the devShell.
-    - mizchi/pkfire/skills/pkfire#77aa9899658d328eaa4280cc944c4aaa4422d3a9
+    # Pinned to the same commit (tag v0.12.1) as the `pkfire` flake input so the
+    # skill's guidance matches the MoonBit `pkf` binary in the devShell.
+    - mizchi/pkfire/skills/pkfire#20f3763906502de29f5d3409cae42ac9fe2ea4f0
   mcp: []
 scripts: {}
