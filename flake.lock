@@ -115,16 +115,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1782490071,
-        "narHash": "sha256-o7kFXn4Pfg0hhWWLfzNXvXKK9CCGr0U/gDK82WS1hhE=",
+        "lastModified": 1782495470,
+        "narHash": "sha256-88sOmPXiQ/kGskHIOFZWiP349Q1Y1Gobego0Zks2N8U=",
         "owner": "mizchi",
         "repo": "pkfire",
-        "rev": "fdf1dc82763b14985b79c9ab750214f12f6b5491",
+        "rev": "88e5ce297f870da006220c0b43c34deb42e25c25",
         "type": "github"
       },
       "original": {
         "owner": "mizchi",
-        "ref": "v0.12.2",
+        "ref": "v0.12.3",
         "repo": "pkfire",
         "type": "github"
       }
